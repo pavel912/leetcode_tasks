@@ -42,4 +42,67 @@ public class Solution {
 
         return nums[0] + min1 + min2;
     }
+
+    public ListNode rotateRight(ListNode head, int k) {
+        // https://leetcode.com/problems/rotate-list/?envType=study-plan-v2&envId=top-interview-150
+
+        if (head == null) return null;
+
+        ListNode cur = head;
+        ListNode tail = null;
+        int n = 0;
+        while (cur != null) {
+            tail = cur;
+            cur = cur.next;
+            n++;
+        }
+
+        k %= n;
+
+        if (k == 0) return head;
+
+        ListNode newTail = head;
+
+        int cnt = 0;
+        while (cnt < n - k - 1) {
+            newTail = newTail.next;
+            cnt++;
+        }
+
+
+        ListNode newHead = newTail.next;
+        newTail.next = null;
+        tail.next = head;
+
+        return newHead;
+    }
+
+    public ListNode partition(ListNode head, int x) {
+        // https://leetcode.com/problems/partition-list/?envType=study-plan-v2&envId=top-interview-150
+
+        ListNode smallHead = new ListNode(-1, null);
+        ListNode smallTail = smallHead;
+        ListNode largeHead = new ListNode(1, null);
+        ListNode largeTail = largeHead;
+
+        ListNode iter = head;
+
+        while (iter != null) {
+            ListNode next = iter.next;
+            iter.next = null;
+
+            if (iter.val < x) {
+                smallTail.next = iter;
+                smallTail = smallTail.next;
+            } else {
+                largeTail.next = iter;
+                largeTail = largeTail.next;
+            }
+
+            iter = next;
+        }
+
+        smallTail.next = largeHead.next;
+        return smallHead.next;
+    }
 }

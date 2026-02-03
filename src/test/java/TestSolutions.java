@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestSolutions {
     private List<Integer> llToList(ListNode head) {
@@ -124,5 +123,20 @@ public class TestSolutions {
         assertEquals(-1, cache.get(1));
         assertEquals(3, cache.get(3));
         assertEquals(4, cache.get(4));
+    }
+
+    @Test
+    public void testTrionic() {
+        assertTrue(new Solution().isTrionic(new int[] {1, 2, 1, 3}));
+    }
+
+    @Test
+    public void testTrionic2() {
+        assertFalse(new Solution().isTrionic(new int[] {2, 1, 3}));
+    }
+
+    @Test
+    public void testTrionic3() {
+        assertTrue(new Solution().isTrionic(new int[] {1, 3, 5, 4, 2, 6}));
     }
 }

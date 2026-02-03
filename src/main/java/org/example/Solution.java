@@ -105,4 +105,37 @@ public class Solution {
         smallTail.next = largeHead.next;
         return smallHead.next;
     }
+
+    public boolean isTrionic(int[] nums) {
+        // https://leetcode.com/problems/trionic-array-i/?envType=daily-question&envId=2026-02-03
+
+        int n = nums.length;
+
+        int cnt = 1;
+        int i = 1;
+        while (i < n && nums[i - 1] < nums[i]) {
+            cnt++;
+            i++;
+        }
+
+        if (i >= n || cnt < 2) return false;
+
+        cnt = 1;
+
+        while (i < n && nums[i - 1] > nums[i]) {
+            cnt++;
+            i++;
+        }
+
+        if (i >= n || cnt < 2) return false;
+
+        cnt = 1;
+
+        while (i < n && nums[i - 1] < nums[i]) {
+            cnt++;
+            i++;
+        }
+
+        return i == n && cnt > 1;
+    }
 }

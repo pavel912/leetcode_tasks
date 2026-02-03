@@ -138,4 +138,64 @@ public class Solution {
 
         return i == n && cnt > 1;
     }
+
+    public int maxDepth(TreeNode root) {
+        // https://leetcode.com/problems/maximum-depth-of-binary-tree/?envType=study-plan-v2&envId=top-interview-150
+        if (root == null) return 0;
+
+        return rec(root, 1);
+    }
+
+    private int rec(TreeNode node, int depth) {
+        int left = depth;
+        int right = depth;
+
+        if (node.left != null) left = rec(node.left, depth + 1);
+
+        if (node.right != null) right = rec(node.right, depth + 1);
+
+        return Math.max(left, right);
+    }
+
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        // https://leetcode.com/problems/same-tree/?envType=study-plan-v2&envId=top-interview-150
+        if (p == null && q == null) return true;
+
+        if (p == null || q == null || p.val != q.val) return false;
+
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
+
+    public TreeNode invertTree(TreeNode root) {
+        // https://leetcode.com/problems/invert-binary-tree/?envType=study-plan-v2&envId=top-interview-150
+        if (root == null) return null;
+
+        TreeNode tmp = root.left;
+        root.left = root.right;
+        root.right = tmp;
+
+        invertTree(root.left);
+        invertTree(root.right);
+
+        return root;
+    }
+
+    public boolean isSymmetric(TreeNode root) {
+        // https://leetcode.com/problems/symmetric-tree/description/?envType=study-plan-v2&envId=top-interview-150
+        if (root == null) return true;
+
+        return compare(root.left, root.right);
+    }
+
+    private boolean isMirror(TreeNode p, TreeNode q) {
+        if (p.val != q.val) return false;
+
+        return compare(p.left, q.right) && compare(p.right, q.left);
+    }
+
+    private boolean compare(TreeNode a, TreeNode b) {
+        if (a == null && b == null) return true;
+
+        return a != null && b != null && isMirror(a, b);
+    }
 }

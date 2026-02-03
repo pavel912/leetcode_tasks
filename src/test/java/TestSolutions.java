@@ -1,6 +1,7 @@
 import org.example.LRUCache;
 import org.example.ListNode;
 import org.example.Solution;
+import org.example.TreeNode;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -33,6 +34,15 @@ public class TestSolutions {
 
         return true;
     }
+
+    private boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null) return true;
+
+        if (p == null || q == null || p.val != q.val) return false;
+
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
+
     @Test
     public void testMinCost1() {
         assertEquals(6, new Solution().minimumCost(new int[] {1, 2, 3, 12}));
@@ -139,4 +149,97 @@ public class TestSolutions {
     public void testTrionic3() {
         assertTrue(new Solution().isTrionic(new int[] {1, 3, 5, 4, 2, 6}));
     }
+
+    @Test
+    public void testMaxDepth() {
+        TreeNode input = new TreeNode(1, null, new TreeNode(2));
+        assertEquals(2, new Solution().maxDepth(input));
+    }
+
+    @Test
+    public void testMaxDepth2() {
+        TreeNode input = new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+        assertEquals(3, new Solution().maxDepth(input));
+    }
+
+    @Test
+    public void testMaxDepth1() {
+        assertEquals(0, new Solution().maxDepth(null));
+    }
+
+    @Test
+    public void testIsSameTree() {
+        TreeNode p = new TreeNode(1, new TreeNode(2), new TreeNode(3));
+        TreeNode q = new TreeNode(1, new TreeNode(2), new TreeNode(3));
+        assertTrue(new Solution().isSameTree(p, q));
+    }
+
+    @Test
+    public void testIsSameTree2() {
+        TreeNode p = new TreeNode(1, new TreeNode(2), null);
+        TreeNode q = new TreeNode(1, null, new TreeNode(2));
+        assertFalse(new Solution().isSameTree(p, q));
+    }
+
+    @Test
+    public void testIsSameTree3() {
+        TreeNode p = new TreeNode(1, new TreeNode(3), null);
+        TreeNode q = new TreeNode(1, new TreeNode(2), null);
+        assertFalse(new Solution().isSameTree(p, q));
+    }
+
+    @Test
+    public void testInvertTree() {
+        TreeNode input = new TreeNode(4,
+                new TreeNode(2,
+                        new TreeNode(1),
+                        new TreeNode(3)),
+                new TreeNode(7,
+                        new TreeNode(6),
+                        new TreeNode(9))
+        );
+        TreeNode output = new TreeNode(4,
+                new TreeNode(7,
+                        new TreeNode(9),
+                        new TreeNode(6)),
+                new TreeNode(2,
+                        new TreeNode(3),
+                        new TreeNode(1))
+        );
+        assertTrue(isSameTree(output, new Solution().invertTree(input)));
+    }
+
+    @Test
+    public void testInvertTree2() {
+        TreeNode input = null;
+        TreeNode output = null;
+        assertTrue(isSameTree(output, new Solution().invertTree(input)));
+    }
+
+    @Test
+    public void testIsSymmetric() {
+        TreeNode input = new TreeNode(1,
+                new TreeNode(2,
+                        new TreeNode(3),
+                        new TreeNode(4)),
+                new TreeNode(2,
+                        new TreeNode(4),
+                        new TreeNode(3))
+        );
+        assertTrue(new Solution().isSymmetric(input));
+    }
+
+    @Test
+    public void testIsSymmetric2() {
+        TreeNode input = new TreeNode(1,
+                new TreeNode(2,
+                        new TreeNode(3),
+                        null),
+                new TreeNode(2,
+                        new TreeNode(3),
+                        null)
+        );
+        assertFalse(new Solution().isSymmetric(input));
+    }
+
 }

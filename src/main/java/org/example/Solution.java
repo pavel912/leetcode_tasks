@@ -1,5 +1,9 @@
 package org.example;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Solution {
     public ListNode deleteDuplicates(ListNode head) {
         //https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/description/?envType=study-plan-v2&envId=top-interview-150
@@ -222,5 +226,45 @@ public class Solution {
         }
 
         return minDels;
+    }
+
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/?envType=study-plan-v2&envId=top-interview-150
+
+        Map<Integer, Integer> inorderMap = new HashMap<>();
+
+        for (int i = 0; i < inorder.length; i++) {
+            inorderMap.put(inorder[i], i);
+        }
+
+        TreeNode root = new TreeNode(preorder[0]);
+        TreeNode cur = root;
+
+        for (int i = 1; i < preorder.length; i++) {
+            int target = inorderMap.get(preorder[i]);
+
+            while (true) {
+                if (inorderMap.get(cur.val) < target) {
+                    if (cur.right != null) {
+                        cur = cur.right;
+                    } else {
+                        cur.right = new TreeNode(preorder[i]);
+                        break;
+                    }
+                } else {
+                    if (cur.left != null) {
+                        cur = cur.left;
+                    } else {
+                        cur.left = new TreeNode(preorder[i]);
+                        break;
+                    }
+                }
+            }
+
+            cur = root;
+        }
+
+        return root;
+
     }
 }

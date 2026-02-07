@@ -247,4 +247,11 @@ public class TestSolutions {
         assertEquals(41, new Solution().minimumDeletions("aabbaababbababaabbbaabbbbaababababbabbbababbabbaabaaabbbbbbaaabbbbabaababbaaabbbbaaabababbbaaa"));
     }
 
+    @Test
+    void testBuildTree() {
+        TreeNode ans = new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+
+        assertTrue(isSameTree(ans, new Solution().buildTree(new int[] {3,9,20,15,7}, new int[] {9,3,15,20,7})));
+    }
+
 }

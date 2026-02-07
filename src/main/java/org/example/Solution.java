@@ -228,6 +228,8 @@ public class Solution {
         return minDels;
     }
 
+    private int preorderIndex = 0;
+
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         // https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/?envType=study-plan-v2&envId=top-interview-150
 
@@ -237,6 +239,8 @@ public class Solution {
             inorderMap.put(inorder[i], i);
         }
 
+        return build(preorder, inorderMap, 0, inorder.length - 1);
+        /*
         TreeNode root = new TreeNode(preorder[0]);
         TreeNode cur = root;
 
@@ -265,6 +269,19 @@ public class Solution {
         }
 
         return root;
+         */
+    }
 
+    private TreeNode build(int[] preorder, Map<Integer, Integer> inorderMap, int start, int end) {
+        if (start > end) return null;
+
+        int val = preorder[preorderIndex++];
+        TreeNode node = new TreeNode(val);
+        int mid = inorderMap.get(val);
+
+        node.left = build(preorder, inorderMap, start, mid - 1);
+        node.right = build(preorder, inorderMap, mid + 1, end);
+
+        return node;
     }
 }

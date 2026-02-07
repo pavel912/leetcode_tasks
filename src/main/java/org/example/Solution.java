@@ -198,4 +198,29 @@ public class Solution {
 
         return a != null && b != null && isMirror(a, b);
     }
+
+    public int minimumDeletions(String s) {
+        // https://leetcode.com/problems/minimum-deletions-to-make-string-balanced/?envType=daily-question&envId=2026-02-07
+
+        int totalA = 0;
+        int totalB = 0;
+        int cntA = 0;
+        int cntB = 0;
+
+        for (char c : s.toCharArray()) {
+            if (c == 'a') totalA++;
+            else totalB++;
+        }
+
+        int minDels = Math.min(totalA, totalB);
+
+        for (char c : s.toCharArray()) {
+            if (c == 'a') cntA++;
+            else cntB++;
+
+            minDels = Math.min(minDels, cntB + totalA - cntA);
+        }
+
+        return minDels;
+    }
 }

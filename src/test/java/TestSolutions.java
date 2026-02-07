@@ -242,4 +242,9 @@ public class TestSolutions {
         assertFalse(new Solution().isSymmetric(input));
     }
 
+    @Test
+    void testMinDelitions() {
+        assertEquals(41, new Solution().minimumDeletions("aabbaababbababaabbbaabbbbaababababbabbbababbabbaabaaabbbbbbaaabbbbabaababbaaabbbbaaabababbbaaa"));
+    }
+
 }

@@ -284,4 +284,27 @@ public class Solution {
 
         return node;
     }
+
+    private boolean ans = true;
+
+    public boolean isBalanced(TreeNode root) {
+        // https://leetcode.com/problems/balanced-binary-tree/description/?envType=daily-question&envId=2026-02-08
+        if (root == null) return true;
+
+        height(root, 1);
+
+        return ans;
+    }
+
+    public int height(TreeNode node, int height) {
+        int left = height;
+        int right = height;
+
+        if (node.left != null) left = height(node.left, height + 1);
+        if (node.right != null) right = height(node.right, height + 1);
+
+        if (Math.abs(left - right) > 1) ans = false;
+
+        return Math.max(left, right);
+    }
 }

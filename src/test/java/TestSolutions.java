@@ -254,4 +254,15 @@ public class TestSolutions {
         assertTrue(isSameTree(ans, new Solution().buildTree(new int[] {3,9,20,15,7}, new int[] {9,3,15,20,7})));
     }
 
+    @Test
+    void testIsBalanced() {
+        TreeNode input1 = new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+
+        assertTrue(new Solution().isBalanced(input1));
+
+        TreeNode input2 = new TreeNode(1, new TreeNode(2, new TreeNode(3, new TreeNode(4), new TreeNode(4)), new TreeNode(3)), new TreeNode(2));
+
+        assertFalse(new Solution().isBalanced(input2));
+    }
+
 }

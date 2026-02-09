@@ -265,4 +265,14 @@ public class TestSolutions {
         assertFalse(new Solution().isBalanced(input2));
     }
 
+    @Test
+    void testBalanceBST() {
+        TreeNode input = new TreeNode(1, null, new TreeNode(2, null, new TreeNode(3, null, new TreeNode(4, null, new TreeNode(5)))));
+        TreeNode output = new TreeNode(3, new TreeNode(1, null, new TreeNode(2)), new TreeNode(4, null, new TreeNode(5)));
+
+        TreeNode actual = new Solution().balanceBST(input);
+
+        assertTrue(isSameTree(output, actual));
+    }
+
 }

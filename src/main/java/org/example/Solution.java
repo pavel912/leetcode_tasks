@@ -1,8 +1,6 @@
 package org.example;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Solution {
     public ListNode deleteDuplicates(ListNode head) {
@@ -306,5 +304,38 @@ public class Solution {
         if (Math.abs(left - right) > 1) ans = false;
 
         return Math.max(left, right);
+    }
+
+    public TreeNode balanceBST(TreeNode root) {
+        // https://leetcode.com/problems/balance-a-binary-search-tree/?envType=daily-question&envId=2026-02-09
+
+        List<Integer> elems = new ArrayList<>();
+        inorderTraversal(root, elems);
+
+        return buildBalancedBST(elems, 0, elems.size() - 1);
+    }
+
+    private void inorderTraversal(TreeNode node, List<Integer> elements) {
+        if (node.left != null) {
+            inorderTraversal(node.left, elements);
+        }
+
+        elements.add(node.val);
+
+        if (node.right != null) {
+            inorderTraversal(node.right, elements);
+        }
+    }
+
+    private TreeNode buildBalancedBST(List<Integer> elems, int start, int end) {
+        if (start > end) return null;
+
+        int mid = (end + start) / 2;
+
+        TreeNode node = new TreeNode(elems.get(mid));
+        node.left = buildBalancedBST(elems, start, mid - 1);
+        node.right = buildBalancedBST(elems, mid + 1, end);
+
+        return node;
     }
 }

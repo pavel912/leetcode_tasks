@@ -275,4 +275,9 @@ public class TestSolutions {
         assertTrue(isSameTree(output, actual));
     }
 
+    @Test
+    void testLongestBalanced() {
+        assertEquals(3, new Solution().longestBalanced(new int[] {1, 1, 1, 3, 3, 5, 2, 2}));
+    }
+
 }

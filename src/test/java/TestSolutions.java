@@ -280,4 +280,11 @@ public class TestSolutions {
         assertEquals(3, new Solution().longestBalanced(new int[] {1, 1, 1, 3, 3, 5, 2, 2}));
     }
 
+    @Test
+    void testBuildTree2() {
+        TreeNode ans = new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+
+        assertTrue(isSameTree(ans, new Solution().buildTree2(new int[] {9,3,15,20,7}, new int[] {9,15,7,20,3})));
+    }
+
 }

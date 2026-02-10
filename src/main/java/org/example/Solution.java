@@ -367,4 +367,110 @@ public class Solution {
 
         return maxLength;
     }
+
+    private int index;
+    private final Map<Integer, Integer> inorderIndex  = new HashMap<>();
+
+    public TreeNode buildTree2(int[] inorder, int[] postorder) {
+        // https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/?envType=study-plan-v2&envId=top-interview-150
+
+        // iterate over postorder array in reverse order
+        // use in order traversal to reconstruct a tree using divide and conquer
+        // store indexes in a hash map
+
+        for (int i = 0; i < inorder.length; i++) {
+            inorderIndex.put(inorder[i], i);
+        }
+
+        index = postorder.length - 1;
+
+        return build(postorder, 0, inorder.length - 1);
+    }
+
+    private TreeNode build(int[] postorder, int start, int end) {
+        if (start > end) return null;
+
+        TreeNode node = new TreeNode(postorder[index--]);
+        int mid = inorderIndex.get(node.val);
+
+        node.right = build(postorder, mid + 1, end);
+        node.left = build(postorder, start, mid - 1);
+
+        return node;
+    }
+
+    public Node connect(Node root) {
+        // https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/?envType=study-plan-v2&envId=top-interview-150
+
+        // iterate with bfs
+        // set pointers in each level
+
+        if (root == null) return null;
+
+        Queue<Node> bfs = new LinkedList<>();
+        bfs.add(root);
+
+        while (!bfs.isEmpty()) {
+            int levelSize = bfs.size();
+
+            Node prev = bfs.poll();
+
+            if (prev.left != null) bfs.add(prev.left);
+            if (prev.right != null) bfs.add(prev.right);
+
+            for (int i = 1; i < levelSize; i++) {
+                Node node = bfs.poll();
+                prev.next = node;
+                prev = node;
+
+                if (prev.left != null) bfs.add(prev.left);
+                if (prev.right != null) bfs.add(prev.right);
+            }
+        }
+
+        return root;
+    }
+
+    public Node connectOptimized(Node root) {
+        // https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/?envType=study-plan-v2&envId=top-interview-150
+
+        // connect direct children of a node
+        // connect cousins through direct siblings
+
+        if (root == null) return null;
+
+        Node leftChild = getLeftChild(root);
+        Node rightChild = getRightChild(root);
+
+        if (leftChild == null && rightChild == null) return root;
+
+        if (leftChild != rightChild) {
+            leftChild.next = rightChild;
+        }
+
+        if (root.next != null) {
+            rightChild.next = getLeftChild(root.next);
+        }
+
+        connectOptimized(leftChild);
+        if (leftChild != rightChild) connectOptimized(rightChild);
+
+        return root;
+    }
+
+    private Node getLeftChild(Node node) {
+        if (node.left != null) return node.left;
+
+        if (node.right != null) return node.right;
+
+        return null;
+    }
+
+    private Node getRightChild(Node node) {
+        if (node.right != null) return node.right;
+
+        if (node.left != null) return node.left;
+
+        return null;
+    }
 }

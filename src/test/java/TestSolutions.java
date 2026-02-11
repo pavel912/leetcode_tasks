@@ -302,4 +302,14 @@ public class TestSolutions {
         // 2 3 5
     }
 
+    @Test
+    void testFlatten() {
+        TreeNode input = new TreeNode(1, new TreeNode(2, new TreeNode(3), new TreeNode(4)), new TreeNode(5, null, new TreeNode(6)));
+        TreeNode output = new TreeNode(1, null, new TreeNode(2, null, new TreeNode(3, null, new TreeNode(4, null, new TreeNode(5, null, new TreeNode(6))))));
+
+        new Solution().flatten(input);
+
+        assertTrue(isSameTree(output, input));
+    }
+
 }

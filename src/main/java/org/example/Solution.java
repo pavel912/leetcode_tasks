@@ -482,4 +482,32 @@ public class Solution {
         // if balanced subarray exists -> there exists a subsubarray for each balanced size
         return 0;
     }
+
+    public void flatten(TreeNode root) {
+        // https://leetcode.com/problems/flatten-binary-tree-to-linked-list/?envType=study-plan-v2&envId=top-interview-150
+
+        // flatten(left) should follow the node
+        // flatten(right) should come after the flatten(left)
+
+        rec(root);
+    }
+
+    private TreeNode rec(TreeNode node) {
+        if (node == null) return null;
+
+        TreeNode leftEnd = rec(node.left);
+        TreeNode rightEnd = rec(node.right);
+
+        if (leftEnd != null) {
+            leftEnd.right = node.right;
+            node.right = node.left;
+            node.left = null;
+        }
+
+        if (rightEnd != null) return rightEnd;
+
+        if (leftEnd != null) return leftEnd;
+
+        return node;
+    }
 }

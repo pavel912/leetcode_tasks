@@ -473,4 +473,13 @@ public class Solution {
 
         return null;
     }
+
+    public int longestBalanced_2_skipped(int[] nums) {
+        // https://leetcode.com/problems/longest-balanced-subarray-ii/?envType=daily-question&envId=2026-02-11
+
+        // the answer is between 0 and nums.length
+        // find max length with a binary search
+        // if balanced subarray exists -> there exists a subsubarray for each balanced size
+        return 0;
+    }
 }

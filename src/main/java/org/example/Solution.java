@@ -510,4 +510,72 @@ public class Solution {
 
         return node;
     }
+
+    public int longestBalanced(String s) {
+        int n = s.length();
+        int res = 0;
+        int[] cnt = new int[26];
+
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(cnt, 0);
+            for (int j = i; j < n; j++) {
+                boolean flag = true;
+                int c = s.charAt(j) - 'a';
+                cnt[c]++;
+
+                for (int x : cnt) {
+                    if (x > 0 && x != cnt[c]) {
+                        flag = false;
+                        break;
+                    }
+                }
+
+                if (flag) {
+                    res = Math.max(res, j - i + 1);
+                }
+            }
+        }
+        return res;
+    }
+
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        // https://leetcode.com/problems/path-sum/?envType=study-plan-v2&envId=top-interview-150
+        if (root == null) return false;
+
+        return pathSum(root, targetSum, 0);
+    }
+
+    private boolean pathSum(TreeNode node, int targetSum, int sum) {
+        if (node.left == null && node.right == null) {
+            return node.val + sum == targetSum;
+        }
+
+        if (node.left != null && pathSum(node.left, targetSum, sum + node.val)) return true;
+
+        return node.right != null && pathSum(node.right, targetSum, sum + node.val);
+    }
+
+    public int sumNumbers(TreeNode root) {
+        // https://leetcode.com/problems/sum-root-to-leaf-numbers/?envType=study-plan-v2&envId=top-interview-150
+
+        return pathNum(root, 0);
+    }
+
+    private int pathNum(TreeNode node, int sum) {
+        if (node.left == null && node.right == null) {
+            return sum * 10 + node.val;
+        }
+
+        int res = 0;
+
+        if (node.left != null) {
+            res += pathNum(node.left, sum * 10 + node.val);
+        }
+
+        if (node.right != null) {
+            res += pathNum(node.right, sum * 10 + node.val);
+        }
+
+        return res;
+    }
 }

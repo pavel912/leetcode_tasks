@@ -312,4 +312,23 @@ public class TestSolutions {
         assertTrue(isSameTree(output, input));
     }
 
+    @Test
+    void testBalancedString() {
+        assertEquals(6, new Solution().longestBalanced("abcabcy"));
+    }
+
+    @Test
+    void testPathSum() {
+        TreeNode input = new TreeNode(5, new TreeNode(4, new TreeNode(11, new TreeNode(7), new TreeNode(2)), null), null);
+
+        assertTrue(new Solution().hasPathSum(input, 22));
+    }
+
+    @Test
+    void testPathNumbers() {
+        TreeNode input = new TreeNode(5, new TreeNode(4, new TreeNode(2, new TreeNode(7), new TreeNode(2)), null), null);
+
+        assertEquals(5427 + 5422, new Solution().sumNumbers(input));
+    }
+
 }

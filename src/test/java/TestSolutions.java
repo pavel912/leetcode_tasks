@@ -331,4 +331,16 @@ public class TestSolutions {
         assertEquals(5427 + 5422, new Solution().sumNumbers(input));
     }
 
+    @Test
+    void testChampagneTower() {
+        assertEquals(0.5, new Solution().champagneTower(2, 1, 1));
+
+        assertEquals(0.18750, new Solution().champagneTower(25, 6, 1));
+    }
+
+    @Test
+    void testAddBinary() {
+        assertEquals("100000", new Solution().addBinary("11111", "1"));
+    }
+
 }

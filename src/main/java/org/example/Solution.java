@@ -578,4 +578,58 @@ public class Solution {
 
         return res;
     }
+
+    public double champagneTower(int poured, int query_row, int query_glass) {
+        double[][] A = new double[102][102];
+        A[0][0] = (double) poured;
+        for (int r = 0; r <= query_row; ++r) {
+            for (int c = 0; c <= r; ++c) {
+                double q = (A[r][c] - 1.0) / 2.0;
+                if (q > 0) {
+                    A[r+1][c] += q;
+                    A[r+1][c+1] += q;
+                }
+            }
+        }
+
+        return Math.min(1, A[query_row][query_glass]);
+    }
+
+    public String addBinary(String a, String b) {
+        boolean shift = false;
+
+        StringBuilder sb = new StringBuilder();
+        int i = a.length() - 1, j = b.length() - 1;
+
+        while (i >= 0 && j >= 0) {
+            int res = (a.charAt(i) - '0') + (b.charAt(j) - '0') + (shift ? 1 : 0);
+            shift = res > 1;
+            res %= 2;
+            sb.append(res);
+            i--;
+            j--;
+        }
+
+        while (i >= 0) {
+            int res = (a.charAt(i) - '0') + (shift ? 1 : 0);
+            shift = res > 1;
+            res %= 2;
+            sb.append(res);
+            i--;
+        }
+
+        while (j >= 0) {
+            int res = (b.charAt(j) - '0') + (shift ? 1 : 0);
+            shift = res > 1;
+            res %= 2;
+            sb.append(res);
+            j--;
+        }
+
+        if (shift) {
+            sb.append(1);
+        }
+
+        return sb.reverse().toString();
+    }
 }

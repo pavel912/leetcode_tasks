@@ -343,4 +343,23 @@ public class TestSolutions {
         assertEquals("100000", new Solution().addBinary("11111", "1"));
     }
 
+    @Test
+    void testReverseBinary() {
+        assertEquals(964176192, new Solution().reverseBits(43261596));
+    }
+
+    @Test
+    void testMaxPathSum() {
+        TreeNode input = new TreeNode(-10, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+
+        assertEquals(42, new Solution().maxPathSum(input));
+    }
+
+    @Test
+    void testMaxPathSumAllPositive() {
+        TreeNode input = new TreeNode(1, new TreeNode(2, new TreeNode(3), new TreeNode(3)), new TreeNode(3));
+
+        assertEquals(9, new Solution().maxPathSum(input));
+    }
+
 }

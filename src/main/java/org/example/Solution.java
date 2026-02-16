@@ -632,4 +632,41 @@ public class Solution {
 
         return sb.reverse().toString();
     }
+
+    public int reverseBits(int n) {
+        int reverse = 0;
+
+        int bits = 32;
+
+        for (int b = 0; b < bits; b++) {
+            reverse += ((n % 2) << (bits - b - 1));
+
+            n >>= 1;
+        }
+
+        return reverse;
+    }
+
+    private int maxSum = -1000;
+
+    public int maxPathSum(TreeNode root) {
+        maxPathSumHelper(root);
+
+        return maxSum;
+    }
+
+    public int maxPathSumHelper(TreeNode node) {
+        if (node == null) return -1000;
+
+        int left = -1000, right = -1000;
+        if (node.left != null) left = maxPathSumHelper(node.left);
+        if (node.right != null) right = maxPathSumHelper(node.right);
+
+
+        int pendingPathMaxSum = Math.max(left + node.val, Math.max(node.val + right, node.val));
+        int finishedPathMaxSum = left + node.val + right;
+        maxSum = Math.max(maxSum, Math.max(pendingPathMaxSum, finishedPathMaxSum));
+
+        return pendingPathMaxSum;
+    }
 }

@@ -362,4 +362,29 @@ public class TestSolutions {
         assertEquals(9, new Solution().maxPathSum(input));
     }
 
+    @Test
+    void testBinaryWatch() {
+        List<String> expected = List.of("0:01","0:02","0:04","0:08","0:16","0:32","1:00","2:00","4:00","8:00");
+        var actual = new Solution().readBinaryWatch(1);
+        actual.sort(String::compareTo);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testCountCompleteTreeNodes() {
+        TreeNode input = new TreeNode(1, new TreeNode(2, new TreeNode(4), new TreeNode(5)), new TreeNode(3, new TreeNode(6), null));
+
+        assertEquals(6, new Solution().countNodes(input));
+    }
+
+    @Test
+    void testLCA() {
+        var left = new TreeNode(2, new TreeNode(4), new TreeNode(5));
+        var right = new TreeNode(3, new TreeNode(6), null);
+        TreeNode input = new TreeNode(1, left, right);
+
+        assertEquals(input, new Solution().lowestCommonAncestor(input, left, right));
+        assertEquals(input, new Solution().lowestCommonAncestor(input, left, input));
+    }
+
 }

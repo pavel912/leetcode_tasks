@@ -669,4 +669,131 @@ public class Solution {
 
         return pendingPathMaxSum;
     }
+
+    public List<String> readBinaryWatch(int turnedOn) {
+        if (turnedOn > 8) return new ArrayList<>();
+
+        List<String> values = new ArrayList<>();
+
+        for (int h = 0; h <= turnedOn; h++) {
+            int m = turnedOn - h;
+            var hours = getHourValues(h);
+            var minutes = getMinuteValues(m);
+            values.addAll(zipHoursAndMinutes(hours, minutes));
+        }
+
+        return values;
+    }
+
+    private List<Integer> getHourValues(int hourBits) {
+        return getValuesByNumberOfSetBits(hourBits, 4, 12);
+    }
+
+    private List<Integer> getMinuteValues(int minBits) {
+        return getValuesByNumberOfSetBits(minBits, 6, 60);
+    }
+
+    private List<Integer> getValuesByNumberOfSetBits(int setBits, int maxBits, int maxVals) {
+        List<Integer> result = new ArrayList<>();
+
+        for (int val = 0; val < maxVals; val++) {
+            if (countSetBits(val, maxBits) == setBits) result.add(val);
+        }
+
+        return result;
+    }
+
+    private int countSetBits(int num, int maxBits) {
+        int setBits = 0;
+        int mask = 1;
+
+        for (int bit = 0; bit < maxBits; bit++) {
+            if ((num & mask) == mask) setBits++;
+            mask <<= 1;
+        }
+
+        return setBits;
+    }
+
+    private List<String> zipHoursAndMinutes(List<Integer> hours, List<Integer> minutes) {
+        List<String> result = new ArrayList<>();
+
+        for (int h : hours) {
+            for (int m : minutes) {
+                result.add(h + ":" + (m < 10 ? "0" : "") + m);
+            }
+        }
+
+        return result;
+    }
+
+    public int countNodes(TreeNode root) {
+        // https://leetcode.com/problems/count-complete-tree-nodes/description/?envType=study-plan-v2&envId=top-interview-150
+        if (root == null) return 0;
+
+        int left = countLeftMost(root);
+        int right = countRightMost(root);
+
+        // tree is perfect
+        // number of its nodes can be computed with a formula
+        if (left == right) return (1 << left) - 1;
+
+        // otherwise it is imperfect
+        // count number of nodes in it's left and right subtrees in the same way
+        // complexity O(log^2(n))
+        return 1 + countNodes(root.left) + countNodes(root.right);
+    }
+
+    private int countLeftMost(TreeNode node) {
+        int count = 0;
+
+        while (node != null) {
+            node = node.left;
+            count++;
+        }
+
+        return count;
+    }
+
+    private int countRightMost(TreeNode node) {
+        int count = 0;
+
+        while (node != null) {
+            node = node.right;
+            count++;
+        }
+
+        return count;
+    }
+
+    private List<TreeNode> pathP;
+    private List<TreeNode> pathQ;
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/?envType=study-plan-v2&envId=top-interview-150
+        pathP = new ArrayList<>();
+        pathQ = new ArrayList<>();
+
+        dfs(root, p, new ArrayList<>(), pathP);
+        dfs(root, q, new ArrayList<>(), pathQ);
+
+        for (int i = 0; i < Math.min(pathP.size(), pathQ.size()); i++) {
+            if (pathP.get(i) != pathQ.get(i)) return pathP.get(i - 1);
+        }
+
+        return pathP.size() < pathQ.size() ? pathP.getLast() : pathQ.getLast();
+    }
+
+    private void dfs(TreeNode node, TreeNode target, List<TreeNode> path, List<TreeNode> targetPath) {
+        path.add(node);
+        if (node == target) {
+            targetPath.addAll(path);
+            return;
+        }
+
+        if (node.left != null) dfs(node.left, target, path, targetPath);
+        if (node.right != null) dfs(node.right, target, path, targetPath);
+
+        path.removeLast();
+    }
 }

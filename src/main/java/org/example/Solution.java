@@ -796,4 +796,138 @@ public class Solution {
 
         path.removeLast();
     }
+
+    public boolean hasAlternatingBits(int n) {
+        int mask = 1;
+        int bit = 0;
+        if ((n & 1) == 0) {
+            mask <<= 1;
+            bit++;
+        }
+
+        int val = mask;
+
+        while (mask <= n && bit < 31) {
+            if ((n & mask) != val) return false;
+
+            mask <<= 1;
+
+            if (val == 0) val = mask;
+            else val = 0;
+            bit++;
+        }
+
+        return true;
+    }
+
+    public List<Integer> rightSideView(TreeNode root) {
+        // https://leetcode.com/problems/binary-tree-right-side-view/?envType=study-plan-v2&envId=top-interview-150
+        List<Integer> rigthSideView = new ArrayList<>();
+        if (root == null) return rigthSideView;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            rigthSideView.add(queue.peek().val);
+
+            for (int i = 0; i < levelSize; i++) {
+                var node = queue.poll();
+
+                if (node.right != null) queue.add(node.right);
+                if (node.left != null) queue.add(node.left);
+            }
+        }
+
+        return rigthSideView;
+    }
+
+    public List<Double> averageOfLevels(TreeNode root) {
+        // https://leetcode.com/problems/average-of-levels-in-binary-tree/?envType=study-plan-v2&envId=top-interview-150
+        List<Double> levelAvgs = new ArrayList<>();
+        if (root == null) return levelAvgs;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            levelAvgs.add(0d);
+
+            for (int i = 0; i < levelSize; i++) {
+                var node = queue.poll();
+                double mean = levelAvgs.getLast();
+
+                levelAvgs.set(levelAvgs.size() - 1, mean + (node.val - mean) / (i + 1));
+
+                if (node.right != null) queue.add(node.right);
+                if (node.left != null) queue.add(node.left);
+            }
+        }
+
+        return levelAvgs;
+    }
+
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        // https://leetcode.com/problems/binary-tree-level-order-traversal/?envType=study-plan-v2&envId=top-interview-150
+        List<List<Integer>> traversal = new ArrayList<>();
+        if (root == null) return traversal;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            List<Integer> level = new ArrayList<>();
+
+            for (int i = 0; i < levelSize; i++) {
+                var node = queue.poll();
+                level.add(node.val);
+
+                if (node.left != null) queue.add(node.left);
+                if (node.right != null) queue.add(node.right);
+            }
+
+            traversal.add(level);
+        }
+
+        return traversal;
+    }
+
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        // https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/?envType=study-plan-v2&envId=top-interview-150
+
+        List<List<Integer>> traversal = new ArrayList<>();
+        if (root == null) return traversal;
+        boolean leftOrder = true;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            List<Integer> levelTraversal = new ArrayList<>();
+            List<TreeNode> levelNodes = new ArrayList<>();
+
+            for (int i = 0; i < levelSize; i++) {
+                var node = queue.poll();
+                levelTraversal.add(node.val);
+                if (leftOrder) {
+                    if (node.left != null) levelNodes.add(node.left);
+                    if (node.right != null) levelNodes.add(node.right);
+                } else {
+                    if (node.right != null) levelNodes.add(node.right);
+                    if (node.left != null) levelNodes.add(node.left);
+                }
+            }
+
+            traversal.add(levelTraversal);
+            queue.addAll(levelNodes.reversed());
+
+            leftOrder = !leftOrder;
+        }
+
+        return traversal;
+    }
 }

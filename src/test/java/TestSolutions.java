@@ -387,4 +387,25 @@ public class TestSolutions {
         assertEquals(input, new Solution().lowestCommonAncestor(input, left, input));
     }
 
+    @Test
+    void testAlternatingBits() {
+        assertTrue(new Solution().hasAlternatingBits(5));
+        assertTrue(new Solution().hasAlternatingBits(1431655765));
+        assertTrue(new Solution().hasAlternatingBits(2));
+    }
+
+    @Test
+    void testBTLevelAvg() {
+        TreeNode input = new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+
+        assertEquals(List.of(3.0d, 14.5d, 11.0d), new Solution().averageOfLevels(input));
+    }
+
+    @Test
+    void testZigZagTraversal() {
+        TreeNode input = new TreeNode(3, new TreeNode(9, new TreeNode(5), new TreeNode(8)), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+
+        assertEquals(List.of(List.of(3), List.of(20, 9), List.of(5, 8, 15, 7)), new Solution().zigzagLevelOrder(input));
+    }
+
 }

@@ -408,4 +408,8 @@ public class TestSolutions {
         assertEquals(List.of(List.of(3), List.of(20, 9), List.of(5, 8, 15, 7)), new Solution().zigzagLevelOrder(input));
     }
 
+    @Test
+    void testCountBinarySubstrings() {
+        assertEquals(6, new Solution().countBinarySubstrings("00110011"));
+    }
 }

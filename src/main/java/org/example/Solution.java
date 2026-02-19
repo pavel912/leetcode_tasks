@@ -930,4 +930,31 @@ public class Solution {
 
         return traversal;
     }
+
+    public int countBinarySubstrings(String s) {
+        // https://leetcode.com/problems/count-binary-substrings/?envType=daily-question&envId=2026-02-19
+        int res = 0;
+        int countZero = 0;
+        int countOne = 0;
+        if (s.charAt(0) == '0') countZero++;
+        else countOne++;
+
+        for (int i = 1; i < s.length(); i++) {
+            if (s.charAt(i) == '0') {
+                if (s.charAt(i - 1) == '1') {
+                    countZero = 0;
+                }
+                countZero++;
+                if (countZero <= countOne) res++;
+            } else {
+                if (s.charAt(i - 1) == '0') {
+                    countOne = 0;
+                }
+                countOne++;
+                if (countOne <= countZero) res++;
+            }
+        }
+
+        return res;
+    }
 }

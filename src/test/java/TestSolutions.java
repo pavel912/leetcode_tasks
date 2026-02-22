@@ -412,4 +412,42 @@ public class TestSolutions {
     void testCountBinarySubstrings() {
         assertEquals(6, new Solution().countBinarySubstrings("00110011"));
     }
+
+    @Test
+    void testCountPrime() {
+        assertEquals(4, new Solution().countPrimeSetBits(6, 10));
+        assertEquals(5, new Solution().countPrimeSetBits(10, 15));
+        assertEquals(0, new Solution().countPrimeSetBits(2, 2));
+        assertEquals(1, new Solution().countPrimeSetBits(3, 3));
+    }
+
+    @Test
+    void testMaxGap() {
+        assertEquals(2, new Solution().binaryGap(22));
+        assertEquals(0, new Solution().binaryGap(8));
+        assertEquals(2, new Solution().binaryGap(5));
+        assertEquals(10, new Solution().binaryGap(1025));
+    }
+
+    @Test
+    void testMinDiffBST() {
+        TreeNode input = new TreeNode(4, new TreeNode(2, new TreeNode(1), new TreeNode(3)), new TreeNode(6));
+
+        assertEquals(1, new Solution().getMinimumDifference(input));
+    }
+
+    @Test
+    void testMinDiffBST2() {
+        TreeNode input = new TreeNode(8, new TreeNode(4, new TreeNode(2), new TreeNode(6)), new TreeNode(12, new TreeNode(9), new TreeNode(14)));
+
+        assertEquals(1, new Solution().getMinimumDifference(input));
+    }
+
+    @Test
+    void testKthSmallestBST() {
+        TreeNode input = new TreeNode(8, new TreeNode(4, new TreeNode(2), new TreeNode(6)), new TreeNode(12, new TreeNode(9), new TreeNode(14)));
+
+        assertEquals(6, new Solution().kthSmallest(input, 3));
+    }
+
 }

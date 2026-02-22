@@ -957,4 +957,73 @@ public class Solution {
 
         return res;
     }
+
+    public int countPrimeSetBits(int left, int right) {
+        // https://leetcode.com/problems/prime-number-of-set-bits-in-binary-representation/?envType=daily-question&envId=2026-02-22
+        // number of set bits is in range 0..32
+        int[] primeBits = new int[] {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31};
+
+        int countPrime = 0;
+
+        for (int num = left; num <= right; num++) {
+            if (Arrays.binarySearch(primeBits, Integer.bitCount(num)) >= 0) countPrime++;
+        }
+
+        return countPrime;
+    }
+
+    public int binaryGap(int n) {
+        // https://leetcode.com/problems/binary-gap/?envType=daily-question&envId=2026-02-22
+
+        int prevOnePos = -1;
+        int maxGap = 0;
+        for (int i = 0; i < 32 && n > 0; i++) {
+            if ((n & 1) == 1) {
+                if (prevOnePos >= 0) {
+                    maxGap = Math.max(maxGap, i - prevOnePos);
+                }
+
+                prevOnePos = i;
+            }
+
+            n >>= 1;
+        }
+
+        return maxGap;
+    }
+
+    private int minDiff = 100_000;
+    private int prevValue = -1;
+
+    public int getMinimumDifference(TreeNode root) {
+        // https://leetcode.com/problems/minimum-absolute-difference-in-bst/?envType=study-plan-v2&envId=top-interview-150
+
+        inorderTrav(root);
+
+        return minDiff;
+    }
+
+    private void inorderTrav(TreeNode node) {
+        if (node == null) return;
+
+        inorderTrav(node.left);
+        if (prevValue >= 0) minDiff = Math.min(minDiff, Math.abs(node.val - prevValue));
+        prevValue = node.val;
+
+        inorderTrav(node.right);
+    }
+
+    private int bstIndex = 1;
+
+    public int kthSmallest(TreeNode root, int k) {
+        if (root == null) return -1;
+
+        int left = kthSmallest(root.left, k);
+        if (left >= 0) return left;
+
+        if (bstIndex == k) return root.val;
+        bstIndex++;
+
+        return kthSmallest(root.right, k);
+    }
 }

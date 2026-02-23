@@ -450,4 +450,33 @@ public class TestSolutions {
         assertEquals(6, new Solution().kthSmallest(input, 3));
     }
 
+    @Test
+    void testHasAllCodes() {
+        assertTrue(new Solution().hasAllCodes("00110110", 2));
+
+        assertFalse(new Solution().hasAllCodes("0110", 2));
+
+        assertTrue(new Solution().hasAllCodes("00110", 2));
+    }
+
+    @Test
+    void testIsValidBST() {
+        TreeNode input1 = new TreeNode(2, new TreeNode(1), new TreeNode(3));
+        assertTrue(new Solution().isValidBST(input1));
+
+        TreeNode input2 = new TreeNode(5, new TreeNode(4, null, new TreeNode(6)), new TreeNode(6, new TreeNode(4), null));
+        assertFalse(new Solution().isValidBST(input2));
+    }
+
+    @Test
+    void testNumberOfIslands() {
+        char[][] input = new char[][]{
+                {'1', '1', '1', '1', '0'},
+                {'1', '1', '0', '1', '0'},
+                {'1', '1', '0', '0', '0'},
+                {'0', '0', '0', '0', '1'}};
+
+        assertEquals(2, new Solution().numIslands(input));
+    }
+
 }

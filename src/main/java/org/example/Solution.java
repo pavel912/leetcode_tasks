@@ -1026,4 +1026,82 @@ public class Solution {
 
         return kthSmallest(root.right, k);
     }
+
+    public boolean hasAllCodes(String s, int k) {
+        if (s.length() < k) return false;
+
+        boolean[] seenCodes = new boolean[1 << k];
+
+        int code = Integer.parseInt(s.substring(0, k), 2);
+        seenCodes[code] = true;
+        int endIndex = k - 1;
+
+        while (++endIndex < s.length()) {
+            char mostImpBit = s.charAt(endIndex - k);
+            if (mostImpBit == '1') code -= (1 << (k - 1));
+
+            code <<= 1;
+            code += (s.charAt(endIndex) - '0');
+            seenCodes[code] = true;
+        }
+
+        for (boolean b : seenCodes) {
+            if (!b) return false;
+        }
+
+        return true;
+    }
+
+    private long minVal = Long.MIN_VALUE;
+
+    public boolean isValidBST(TreeNode root) {
+        // https://leetcode.com/problems/validate-binary-search-tree/?envType=study-plan-v2&envId=top-interview-150
+        if (root == null) return true;
+        if (!isValidBST(root.left)) return false;
+
+        if (minVal >= root.val) return false;
+
+        minVal = root.val;
+
+        return isValidBST(root.right);
+    }
+
+    public int numIslands(char[][] grid) {
+        // https://leetcode.com/problems/number-of-islands/?envType=study-plan-v2&envId=top-interview-150
+        int n = grid.length;
+        int m = grid[0].length;
+
+        int count = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == '1') {
+                    bfs(i, j, grid);
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    private void bfs(int i, int j, char[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+
+        Queue<int[]> cells = new LinkedList<>();
+        cells.add(new int[] {i, j});
+
+        while (!cells.isEmpty()) {
+            int[] cell = cells.poll();
+            int ii = cell[0], jj = cell[1];
+
+            grid[ii][jj] = '0';
+
+            if (ii < n - 1 && grid[ii + 1][jj] == '1') cells.add(new int[] {ii + 1, jj});
+            if (ii > 0 && grid[ii - 1][jj] == '1') cells.add(new int[] {ii - 1, jj});
+            if (jj < m - 1 && grid[ii][jj + 1] == '1') cells.add(new int[] {ii, jj + 1});
+            if (jj > 0 && grid[ii][jj - 1] == '1') cells.add(new int[] {ii, jj - 1});
+        }
+    }
 }

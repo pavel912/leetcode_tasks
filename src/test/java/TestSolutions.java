@@ -479,4 +479,11 @@ public class TestSolutions {
         assertEquals(2, new Solution().numIslands(input));
     }
 
+    @Test
+    void testSumRootToLeaf() {
+        TreeNode input = new TreeNode(1, new TreeNode(0, new TreeNode(0), new TreeNode(1)), new TreeNode(1, new TreeNode(0), new TreeNode(1)));
+
+        assertEquals(22, new Solution().sumRootToLeaf(input));
+    }
+
 }

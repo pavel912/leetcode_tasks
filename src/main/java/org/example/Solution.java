@@ -399,7 +399,7 @@ public class Solution {
         return node;
     }
 
-    public Node connect(Node root) {
+    public NodeNext connect(NodeNext root) {
         // https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/?envType=study-plan-v2&envId=top-interview-150
 
         // iterate with bfs
@@ -407,19 +407,19 @@ public class Solution {
 
         if (root == null) return null;
 
-        Queue<Node> bfs = new LinkedList<>();
+        Queue<NodeNext> bfs = new LinkedList<>();
         bfs.add(root);
 
         while (!bfs.isEmpty()) {
             int levelSize = bfs.size();
 
-            Node prev = bfs.poll();
+            NodeNext prev = bfs.poll();
 
             if (prev.left != null) bfs.add(prev.left);
             if (prev.right != null) bfs.add(prev.right);
 
             for (int i = 1; i < levelSize; i++) {
-                Node node = bfs.poll();
+                NodeNext node = bfs.poll();
                 prev.next = node;
                 prev = node;
 
@@ -431,7 +431,7 @@ public class Solution {
         return root;
     }
 
-    public Node connectOptimized(Node root) {
+    public NodeNext connectOptimized(NodeNext root) {
         // https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/?envType=study-plan-v2&envId=top-interview-150
 
         // connect direct children of a node
@@ -439,8 +439,8 @@ public class Solution {
 
         if (root == null) return null;
 
-        Node leftChild = getLeftChild(root);
-        Node rightChild = getRightChild(root);
+        NodeNext leftChild = getLeftChild(root);
+        NodeNext rightChild = getRightChild(root);
 
         if (leftChild == null && rightChild == null) return root;
 
@@ -458,7 +458,7 @@ public class Solution {
         return root;
     }
 
-    private Node getLeftChild(Node node) {
+    private NodeNext getLeftChild(NodeNext node) {
         if (node.left != null) return node.left;
 
         if (node.right != null) return node.right;
@@ -466,7 +466,7 @@ public class Solution {
         return null;
     }
 
-    private Node getRightChild(Node node) {
+    private NodeNext getRightChild(NodeNext node) {
         if (node.right != null) return node.right;
 
         if (node.left != null) return node.left;
@@ -1103,5 +1103,121 @@ public class Solution {
             if (jj < m - 1 && grid[ii][jj + 1] == '1') cells.add(new int[] {ii, jj + 1});
             if (jj > 0 && grid[ii][jj - 1] == '1') cells.add(new int[] {ii, jj - 1});
         }
+    }
+
+    private int sumRootToLeaf = 0;
+
+    public int sumRootToLeaf(TreeNode root) {
+        // https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/?envType=daily-question&envId=2026-02-24
+        if (root == null) return 0;
+
+        sumRootToLeafHelper(root, 0);
+        return sumRootToLeaf;
+    }
+
+    private void sumRootToLeafHelper(TreeNode node, int num) {
+        int newNum = (num << 1) + node.val;
+        if (node.left == null && node.right == null) {
+            sumRootToLeaf += newNum;
+            return;
+        }
+
+        if (node.left != null) sumRootToLeafHelper(node.left, newNum);
+        if (node.right != null) sumRootToLeafHelper(node.right, newNum);
+    }
+
+    public void solve(char[][] board) {
+        // https://leetcode.com/problems/surrounded-regions/?envType=study-plan-v2&envId=top-interview-150
+        int n = board.length;
+        int m = board[0].length;
+
+        boolean[][] unsurrounded = new boolean[n][m];
+
+        for (int i = 0; i < n; i++) {
+            if (board[i][0] == 'O' && !unsurrounded[i][0]) {
+                markUnsurrounded(board, unsurrounded, i, 0);
+            }
+
+            if (board[i][m - 1] == 'O' && !unsurrounded[i][m - 1]) {
+                markUnsurrounded(board, unsurrounded, i, m - 1);
+            }
+        }
+
+        for (int j = 0; j < m; j++) {
+            if (board[0][j] == 'O' && !unsurrounded[0][j]) {
+                markUnsurrounded(board, unsurrounded, 0, j);
+            }
+
+            if (board[n - 1][j] == 'O' && !unsurrounded[n - 1][j]) {
+                markUnsurrounded(board, unsurrounded, n - 1, j);
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (board[i][j] == 'O' && !unsurrounded[i][j]) {
+                    board[i][j] = 'X';
+                }
+            }
+        }
+    }
+
+    private void markUnsurrounded(char[][] board, boolean[][] unsurrounded, int i, int j) {
+        int n = board.length;
+        int m = board[0].length;
+
+        Queue<int[]> cells = new LinkedList<>();
+        cells.add(new int[] {i, j});
+
+        unsurrounded[i][j] = true;
+
+        while (!cells.isEmpty()) {
+            var cell = cells.poll();
+            int ii = cell[0], jj = cell[1];
+
+            int[][] points = new int[][] {
+                    {ii + 1, jj},
+                    {ii - 1, jj},
+                    {ii, jj + 1},
+                    {ii, jj - 1}
+            };
+
+            for (var point : points) {
+                int I = point[0], J = point[1];
+
+                if (I >= 0 && I <= n - 1 && J >= 0 && J <= m - 1 && board[I][J] == 'O' && !unsurrounded[I][J]) {
+                    unsurrounded[I][J] = true;
+                    cells.add(point);
+                }
+            }
+        }
+    }
+
+    public Node cloneGraph(Node node) {
+        if (node == null) return null;
+
+        Map<Integer, Node> nodeClones = new HashMap<>();
+        Set<Integer> visited = new HashSet<>();
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(node);
+
+        while (!queue.isEmpty()) {
+            Node cur = queue.poll();
+            nodeClones.putIfAbsent(cur.val, new Node(cur.val));
+
+            if (visited.contains(cur.val)) continue;
+            visited.add(cur.val);
+
+            Node cloned = nodeClones.get(cur.val);
+
+            for (var adj : cur.neighbors) {
+                nodeClones.putIfAbsent(adj.val, new Node(adj.val));
+                var adjCloned = nodeClones.get(adj.val);
+                cloned.neighbors.add(adjCloned);
+                if (!visited.contains(adj.val)) queue.add(adj);
+            }
+        }
+
+        return nodeClones.get(1);
     }
 }

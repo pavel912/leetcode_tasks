@@ -1220,4 +1220,15 @@ public class Solution {
 
         return nodeClones.get(1);
     }
+
+    public int[] sortByBits(int[] arr) {
+        List<Integer> list = new ArrayList<>(Arrays.stream(arr).boxed().toList());
+        list.sort((a, b) -> (Integer.bitCount(a) != Integer.bitCount(b) ? (Integer.bitCount(a) - Integer.bitCount(b)) : (a - b)));
+
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = list.get(i);
+        }
+
+        return arr;
+    }
 }

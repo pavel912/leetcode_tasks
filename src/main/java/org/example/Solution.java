@@ -1273,7 +1273,7 @@ public class Solution {
     }
 
     private record Edge(String source, String target, double cost) {}
-    private record Node(String node, double cost) {}
+    private record GraphNode(String node, double cost) {}
     private Map<String, List<Edge>> graph;
 
     public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
@@ -1306,12 +1306,12 @@ public class Solution {
     }
 
     private double findPath(String source, String target) {
-        Queue<Node> queue = new LinkedList<>();
-        queue.add(new Node(source, 1));
+        Queue<GraphNode> queue = new LinkedList<>();
+        queue.add(new GraphNode(source, 1));
         Set<String> visited = new HashSet<>();
 
         while (!queue.isEmpty()) {
-            Node node = queue.poll();
+            GraphNode node = queue.poll();
             if (!graph.containsKey(node.node)) continue;
 
             if (node.node.equals(target)) return node.cost;
@@ -1319,7 +1319,7 @@ public class Solution {
             for (Edge edge : graph.get(node.node)) {
                 if (visited.contains(edge.target)) continue;
 
-                queue.add(new Node(edge.target, node.cost * edge.cost));
+                queue.add(new GraphNode(edge.target, node.cost * edge.cost));
                 visited.add(edge.target);
             }
         }

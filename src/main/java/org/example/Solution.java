@@ -1231,4 +1231,99 @@ public class Solution {
 
         return arr;
     }
+
+    public int numSteps(String s) {
+        int[] num = new int[s.length() + 1];
+        for (int i = 0; i < s.length(); i++) {
+            num[i + 1] = s.charAt(i) - '0';
+        }
+
+        int lastBit = num.length - 1;
+        int stepsCount = 0;
+
+        while (true) {
+            int pos = reduce(num, lastBit);
+            stepsCount += lastBit - pos;
+            lastBit = pos;
+
+            if (lastBit == 0 && num[0] == 1 || lastBit == 1 && num[0] == 0 && num[1] == 1) return stepsCount;
+
+            addOne(num, lastBit);
+            stepsCount++;
+        }
+    }
+
+    private int reduce(int[] num, int lastBit) {
+        for (int i = lastBit; i >= 0; i--) {
+            if (num[i] != 0) return i;
+        }
+
+        return -1;
+    }
+
+    private void addOne(int[] num, int lastBit) {
+        if (num[lastBit] != 1) return;
+
+        boolean add = true;
+
+        while (add) {
+            add = (++num[lastBit] % 2 == 0);
+            num[lastBit--] %= 2;
+        }
+    }
+
+    private record Edge(String source, String target, double cost) {}
+    private record Node(String node, double cost) {}
+    private Map<String, List<Edge>> graph;
+
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        graph = buildGraph(equations, values);
+
+        double[] ans = new double[queries.size()];
+
+        for (int i = 0; i < queries.size(); i++) {
+            ans[i] = findPath(queries.get(i).getFirst(), queries.get(i).getLast());
+        }
+
+        return ans;
+    }
+
+    private Map<String, List<Edge>> buildGraph(List<List<String>> equations, double[] values) {
+        Map<String, List<Edge>> graph = new HashMap<>();
+
+        for (int i = 0; i < equations.size(); i++) {
+            String source = equations.get(i).getFirst(), target = equations.get(i).getLast();
+            double cost = values[i];
+
+            graph.putIfAbsent(source, new ArrayList<>());
+            graph.putIfAbsent(target, new ArrayList<>());
+
+            graph.get(source).add(new Edge(source, target, cost));
+            graph.get(target).add(new Edge(target, source, 1 / cost));
+        }
+
+        return graph;
+    }
+
+    private double findPath(String source, String target) {
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(new Node(source, 1));
+        Set<String> visited = new HashSet<>();
+
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
+            if (!graph.containsKey(node.node)) continue;
+
+            if (node.node.equals(target)) return node.cost;
+
+            for (Edge edge : graph.get(node.node)) {
+                if (visited.contains(edge.target)) continue;
+
+                queue.add(new Node(edge.target, node.cost * edge.cost));
+                visited.add(edge.target);
+            }
+        }
+
+        return -1;
+    }
 }

@@ -493,4 +493,13 @@ public class TestSolutions {
         assertArrayEquals(new int[] {1,2,4,3}, new Solution().sortByBits(new int[] {3,4,2,1}));
     }
 
+    @Test
+    void testNumSteps() {
+        assertEquals(6, new Solution().numSteps("1101"));
+
+        assertEquals(1, new Solution().numSteps("10"));
+
+        assertEquals(6, new Solution().numSteps("11111"));
+    }
+
 }

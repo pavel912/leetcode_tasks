@@ -1326,4 +1326,46 @@ public class Solution {
 
         return -1;
     }
+
+    public int minPartitions(String n) {
+        // https://leetcode.com/problems/partitioning-into-minimum-number-of-deci-binary-numbers/?envType=daily-question&envId=2026-03-01
+        int maxNum = 0;
+
+        for (char c : n.toCharArray()) {
+            maxNum = Math.max(maxNum, c - '0');
+        }
+
+        return maxNum;
+    }
+
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // https://leetcode.com/problems/course-schedule/?envType=study-plan-v2&envId=top-interview-150
+        Map<Integer, Set<Integer>> adjList = new HashMap<>();
+
+        for (int[] preReq : prerequisites) {
+            int course = preReq[0], req = preReq[1];
+
+            adjList.putIfAbsent(course, new HashSet<>());
+            adjList.get(course).add(req);
+        }
+
+        for (int course = 0; course < numCourses; course++) {
+            Set<Integer> allPreReq = new HashSet<>();
+
+            Queue<Integer> nodesToVisit = new LinkedList<>(adjList.getOrDefault(course, new HashSet<>()));
+
+            while (!nodesToVisit.isEmpty()) {
+                int current = nodesToVisit.poll();
+
+                if (allPreReq.contains(current) || current < course) continue;
+
+                if (current == course) return false;
+
+                allPreReq.add(current);
+                nodesToVisit.addAll(adjList.getOrDefault(current, new HashSet<>()));
+            }
+        }
+
+        return true;
+    }
 }

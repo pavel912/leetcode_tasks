@@ -1368,4 +1368,52 @@ public class Solution {
 
         return true;
     }
+
+    public int minSwaps(int[][] grid) {
+        // https://leetcode.com/problems/minimum-swaps-to-arrange-a-binary-grid/?envType=daily-question&envId=2026-03-02
+
+        // {0: 2, 1: 1, 2: 0}
+        // {0: 1, 1: 0, 2: 2}
+
+        int n = grid.length;
+        int m = grid[0].length;
+
+        int[] zeroBitTail = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            zeroBitTail[i] = -1;
+            for (int j = m - 1; j >= 0; j--) {
+                if (grid[i][j] == 1) {
+                    zeroBitTail[i] = j;
+                    break;
+                }
+            }
+        }
+
+        return countSwaps(zeroBitTail);
+    }
+
+    private int countSwaps(int[] nums) {
+        int ans = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            int k = -1;
+            for (int j = i; j < nums.length; ++j) {
+                if (nums[j] <= i) {
+                    ans += j - i;
+                    k = j;
+                    break;
+                }
+            }
+            if (k >= 0) {
+                for (int j = k; j > i; --j) {
+                    int temp = nums[j];
+                    nums[j] = nums[j - 1];
+                    nums[j - 1] = temp;
+                }
+            } else {
+                return -1;
+            }
+        }
+        return ans;
+    }
 }

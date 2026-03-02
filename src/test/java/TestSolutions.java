@@ -502,4 +502,13 @@ public class TestSolutions {
         assertEquals(6, new Solution().numSteps("11111"));
     }
 
+    @Test
+    void testMinSwaps() {
+        assertEquals(3, new Solution().minSwaps(new int[][]{{0, 0, 1}, {1, 1, 0}, {1, 0, 0}}));
+        assertEquals(2, new Solution().minSwaps(new int[][]{{0, 1, 0}, {0, 1, 0}, {1, 0, 0}}));
+        assertEquals(0, new Solution().minSwaps(new int[][]{{0, 0, 0}, {0, 0, 0}, {1, 0, 0}}));
+        assertEquals(-1, new Solution().minSwaps(new int[][]{{1, 1, 0}, {1, 1, 1}, {1, 1, 0}}));
+        assertEquals(4, new Solution().minSwaps(new int[][]{{1,0,0,0,0,0},{0,0,0,1,0,0},{0,0,0,1,0,0},{0,1,0,0,0,0},{0,0,1,0,0,0},{0,0,0,0,0,1}}));
+    }
+
 }

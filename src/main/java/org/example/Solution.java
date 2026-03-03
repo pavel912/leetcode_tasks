@@ -1416,4 +1416,19 @@ public class Solution {
         }
         return ans;
     }
+
+    public char findKthBit(int n, int k) {
+        if (n == 1) return '0';
+
+        int totalLength = (1 << n) - 1;
+        int middle = (totalLength - 1) / 2;
+
+        if (k - 1 < middle) return findKthBit(n - 1, k);
+        else if (k - 1 > middle) return reverse(findKthBit(n - 1, totalLength - k + 1));
+        else return '1';
+    }
+
+    private char reverse(char c) {
+        return c == '0' ? '1' : '0';
+    }
 }

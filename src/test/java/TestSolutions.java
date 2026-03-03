@@ -511,4 +511,18 @@ public class TestSolutions {
         assertEquals(4, new Solution().minSwaps(new int[][]{{1,0,0,0,0,0},{0,0,0,1,0,0},{0,0,0,1,0,0},{0,1,0,0,0,0},{0,0,1,0,0,0},{0,0,0,0,0,1}}));
     }
 
+    @Test
+    void testKthBit() {
+        assertEquals('0', new Solution().findKthBit(3, 1));
+        assertEquals('1', new Solution().findKthBit(3, 2));
+        assertEquals('1', new Solution().findKthBit(3, 3));
+        assertEquals('1', new Solution().findKthBit(3, 4));
+        assertEquals('0', new Solution().findKthBit(3, 5));
+
+        assertEquals('1', new Solution().findKthBit(4, 11));
+        assertEquals('1', new Solution().findKthBit(4, 4));
+        assertEquals('0', new Solution().findKthBit(4, 12));
+        assertEquals('0', new Solution().findKthBit(4, 13));
+    }
+
 }

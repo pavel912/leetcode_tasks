@@ -1431,4 +1431,43 @@ public class Solution {
     private char reverse(char c) {
         return c == '0' ? '1' : '0';
     }
+
+    public int numSpecial(int[][] mat) {
+        int n = mat.length;
+        int m = mat[0].length;
+        List<Integer> singleRowPoints = new ArrayList<>();
+        int[] columnCount = new int[m];
+
+        for (int i = 0; i < n; i++) {
+            boolean rowFirstPoint = true;
+            boolean isSinglePointRow = false;
+            int rowSinglePoint = -1;
+
+            for (int j = 0; j < m; j++) {
+                if (mat[i][j] == 1) {
+                    columnCount[j]++;
+
+                    if (rowFirstPoint) {
+                        rowSinglePoint = j;
+                        rowFirstPoint = false;
+                        isSinglePointRow = true;
+                    } else {
+                        isSinglePointRow = false;
+                    }
+                }
+            }
+
+            if (isSinglePointRow) {
+                singleRowPoints.add(rowSinglePoint);
+            }
+        }
+
+        int count = 0;
+
+        for (int point : singleRowPoints) {
+            if (columnCount[point] == 1) count++;
+        }
+
+        return count;
+    }
 }

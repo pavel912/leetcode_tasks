@@ -525,4 +525,9 @@ public class TestSolutions {
         assertEquals('0', new Solution().findKthBit(4, 13));
     }
 
+    @Test
+    void testNumSpecial() {
+        assertEquals(1, new Solution().numSpecial(new int[][]{{1, 0, 0}, {0, 0, 1}, {1, 0, 0}}));
+    }
+
 }

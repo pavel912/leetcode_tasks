@@ -1470,4 +1470,145 @@ public class Solution {
 
         return count;
     }
+
+    public int minOperations(String s) {
+        // https://leetcode.com/problems/minimum-changes-to-make-alternating-binary-string/?envType=daily-question&envId=2026-03-05
+        return Math.min(countChangesToMakeAlternating(s, true), countChangesToMakeAlternating(s, false));
+    }
+
+    private int countChangesToMakeAlternating(String s, boolean startZero) {
+        int count = 0;
+        int startIndex = 0;
+
+        if (!startZero) {
+            if (s.charAt(0) != '1') count++;
+            startIndex++;
+        }
+
+        char value = '0';
+
+        for (int i = startIndex; i < s.length(); i++) {
+            if (s.charAt(i) != value) count++;
+            value = value == '0' ? '1' : '0';
+        }
+
+        return count;
+    }
+
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        // https://leetcode.com/problems/course-schedule-ii/description/?envType=study-plan-v2&envId=top-interview-150
+
+        Map<Integer, List<Integer>> adjList = new HashMap<>();
+        Map<Integer, Set<Integer>> preReqs = new HashMap<>();
+        Queue<Integer> indepNodes = new LinkedList<>();
+
+        for (int[] edge : prerequisites) {
+            int source = edge[1], target = edge[0];
+
+            adjList.putIfAbsent(source, new ArrayList<>());
+            adjList.get(source).add(target);
+
+            preReqs.putIfAbsent(target, new HashSet<>());
+            preReqs.get(target).add(source);
+        }
+
+        for (int node = 0; node < numCourses; node++) {
+            if (!preReqs.containsKey(node)) indepNodes.add(node);
+        }
+
+        return kahnsAlgorithm(numCourses, adjList, preReqs, indepNodes);
+    }
+
+    private int[] kahnsAlgorithm(
+            int n,
+            Map<Integer, List<Integer>> adjList,
+            Map<Integer, Set<Integer>> preReqs,
+            Queue<Integer> indepNodes) {
+
+        int[] ans = new int[n];
+        int index = 0;
+
+        while (!indepNodes.isEmpty()) {
+            int node = indepNodes.poll();
+            ans[index++] = node;
+
+            for (int dep : adjList.getOrDefault(node, new ArrayList<>())) {
+                var dependencies = preReqs.get(dep);
+                dependencies.remove(node);
+
+                if (dependencies.isEmpty()) {
+                    preReqs.remove(dep);
+                    indepNodes.add(dep);
+                }
+            }
+        }
+
+        if (!preReqs.isEmpty()) return new int[0];
+
+        return ans;
+    }
+
+    public int snakesAndLadders(int[][] board) {
+        // https://leetcode.com/problems/snakes-and-ladders/?envType=study-plan-v2&envId=top-interview-150
+
+        Map<Integer, List<Integer>> adjList = new HashMap<>();
+
+        int n = board.length;
+
+        for (int cell = 1; cell <= n * n; cell++) {
+            adjList.putIfAbsent(cell, new ArrayList<>());
+
+            for (int dice = 1; dice <= Math.min(n * n - cell, 6); dice++) {
+                int[] xy = cellXY(n, cell + dice);
+                if (board[xy[0]][xy[1]] > 0) {
+                    adjList.get(cell).add(board[xy[0]][xy[1]]);
+                } else {
+                    adjList.get(cell).add(cell + dice);
+                }
+            }
+        }
+
+        return bfsBoard(n, adjList);
+    }
+
+    private int[] cellXY(int n, int cellVal) {
+        int row = (cellVal - 1) / n;
+        int rowIndex = n - row - 1;
+        int column = (cellVal - 1) - row * n;
+        int columnIndex = row % 2 == 0 ? column : n - column - 1;
+
+        return new int[] {rowIndex, columnIndex};
+    }
+
+    private int bfsBoard(int n, Map<Integer, List<Integer>> adjList) {
+        Queue<Integer> cells = new LinkedList<>();
+        boolean[] visited = new boolean[n * n];
+        visited[0] = true;
+        cells.add(1);
+
+        int finish = n * n;
+        int hops = 0;
+
+        while (!cells.isEmpty()) {
+            int queueSize = cells.size();
+
+            for (int i = 0; i < queueSize; i++) {
+                int node = cells.poll();
+
+                if (visited[node - 1]) continue;
+
+                visited[node - 1] = true;
+
+                if (node == finish) return hops;
+
+                for (int next : adjList.get(node)) {
+                    if (!visited[next - 1]) cells.add(next);
+                };
+            }
+
+            hops++;
+        }
+
+        return -1;
+    }
 }

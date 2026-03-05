@@ -530,4 +530,22 @@ public class TestSolutions {
         assertEquals(1, new Solution().numSpecial(new int[][]{{1, 0, 0}, {0, 0, 1}, {1, 0, 0}}));
     }
 
+    @Test
+    void testMinOpsAlternating() {
+        assertEquals(1, new Solution().minOperations("0100"));
+        assertEquals(0, new Solution().minOperations("1010"));
+        assertEquals(2, new Solution().minOperations("1111"));
+    }
+
+    @Test
+    void testFindOrder() {
+        assertArrayEquals(new int[0], new Solution().findOrder(2, new int[][] {{0, 1}, {1, 0}}));
+        assertArrayEquals(new int[] {2, 1, 0}, new Solution().findOrder(3, new int[][] {{0, 1}, {0, 2}, {1, 2}}));
+    }
+
+    @Test
+    void testSnakesLadders() {
+        assertEquals(1, new Solution().snakesAndLadders(new int[][] {{-1, -1}, {-1, 3}}));
+    }
+
 }

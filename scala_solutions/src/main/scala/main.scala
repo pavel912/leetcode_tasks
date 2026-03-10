@@ -1,3 +1,4 @@
+import scala.collection.mutable
 import scala.util.boundary
 import scala.util.boundary.break
 
@@ -41,5 +42,44 @@ def toBinaryString(num: Int, size: Int): String = {
   val zeros = "0" * zerosToAdd
 
   zeros + res
+}
+
+def minMutation(startGene: String, endGene: String, bank: Array[String]): Int = {
+  // https://leetcode.com/problems/minimum-genetic-mutation/?envType=study-plan-v2&envId=top-interview-150
+  val queue = mutable.Queue[String](startGene)
+  val visited = mutable.Set[String]()
+  var cntIter = 0
+
+  boundary:
+    while queue.nonEmpty do
+      val n = queue.size
+
+      for i <- 0 until n do {
+        val gene = queue.dequeue()
+
+        if endGene.equals(gene) then break(cntIter)
+
+        if !visited.contains(gene) then {
+          visited.add(gene)
+
+          for mut <- bank do {
+            if isValidMutation(gene, mut) && !visited.contains(mut) then
+              queue.append(mut)
+          }
+        }
+      }
+
+      cntIter += 1
+
+    -1
+}
+
+def isValidMutation(oldGene: String, newGene: String) : Boolean = {
+  var cntDiff = 0;
+
+  for i <- 0 until 8 do
+    if oldGene.charAt(i) != newGene.charAt(i) then cntDiff += 1
+
+  cntDiff == 1
 }
 

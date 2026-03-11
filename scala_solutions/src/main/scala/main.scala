@@ -83,3 +83,93 @@ def isValidMutation(oldGene: String, newGene: String) : Boolean = {
   cntDiff == 1
 }
 
+def bitwiseComplement(n: Int): Int = {
+  // https://leetcode.com/problems/complement-of-base-10-integer/?envType=daily-question&envId=2026-03-11
+  // n ^ iterMaxVal(n)
+  n ^ logMaxVal(n)
+}
+
+def logMaxVal(n: Int): Int = {
+  if n == 0 then return 1
+
+  val highestPower = Math.floor(Math.log(n) / Math.log(2)) + 1
+
+  Math.pow(2, highestPower).toInt - 1
+}
+
+def iterMaxVal(n: Int): Int = {
+  if n == 0 then return 1
+
+  var highestPower = -1
+  var num = n
+
+  while num > 0 do {
+    highestPower += 1
+    num = num >> 1
+  }
+
+  var res = 0
+
+  for i <- 0 to highestPower do
+    res += (1 << i)
+
+  res
+}
+
+def ladderLength(beginWord: String, endWord: String, wordList: List[String]): Int = {
+  val n = beginWord.length
+  val wordSet = mutable.Set[String](beginWord)
+
+  for word <- wordList do wordSet.add(word)
+
+  val adjList = buildAdjList(wordSet, n)
+
+  val queue = mutable.Queue[String](beginWord)
+  val visited = mutable.Set[String]()
+
+  var seq = 1
+
+  boundary:
+    while queue.nonEmpty do
+      val queueSize = queue.size
+
+      for i <- 0 until queueSize do {
+        val word = queue.dequeue()
+
+        if !visited.contains(word) then {
+          visited.add(word)
+
+          for next <- adjList(word) do {
+            if next.equals(endWord) then break(seq + 1)
+
+            if !visited.contains(next) then
+              queue.enqueue(next)
+          }
+        }
+      }
+
+      seq += 1
+
+    0
+}
+
+def buildAdjList(wordSet: mutable.Set[String], n: Int): mutable.Map[String, mutable.ListBuffer[String]] = {
+  val adjList = mutable.Map[String, mutable.ListBuffer[String]]()
+
+  for word <- wordSet do {
+    adjList.addOne((word, mutable.ListBuffer[String]()))
+
+    for
+      i <- 0 until n
+      char <- 'a' to 'z'
+    do {
+      if word.charAt(i) != char then
+        val newWord = word.substring(0, i) + char + word.substring(i + 1, n)
+        if wordSet.contains(newWord) then
+          adjList(word) += newWord
+    }
+  }
+
+  adjList
+}
+

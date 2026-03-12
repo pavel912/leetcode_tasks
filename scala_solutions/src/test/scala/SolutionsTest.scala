@@ -48,4 +48,33 @@ class SolutionsTest extends AnyFunSuite {
 
     assert(ladderLength("hit", "cog", List("hot","dot","dog","lot","log")) == 0)
   }
+
+  test("trie") {
+    val trie = Trie()
+
+    trie.insert("apple")
+
+    assert(trie.search("apple"))
+    assert(!trie.search("app"))
+
+    assert(trie.startsWith("app"))
+    trie.insert("app")
+
+    assert(trie.search("app"))
+
+  }
+
+  test("wordDictionary") {
+    val dict = WordDictionary()
+
+    dict.addWord("bad")
+    dict.addWord("dad")
+    dict.addWord("mad")
+
+    assert(!dict.search("pad"))
+    assert(dict.search("bad"))
+    assert(dict.search(".ad"))
+    assert(dict.search("b.."))
+    assert(!dict.search(".."))
+  }
 }

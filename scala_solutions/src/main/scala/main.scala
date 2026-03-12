@@ -1,3 +1,4 @@
+import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.util.boundary
 import scala.util.boundary.break
@@ -171,5 +172,112 @@ def buildAdjList(wordSet: mutable.Set[String], n: Int): mutable.Map[String, muta
   }
 
   adjList
+}
+class Trie() {
+  // https://leetcode.com/problems/implement-trie-prefix-tree/description/?envType=study-plan-v2&envId=top-interview-150
+
+  class Node(var value: String, var isWord: Boolean, val children: mutable.Map[Char, Node])
+
+  private val head = Node("", false, mutable.Map())
+
+  def insert(word: String): Unit = {
+    insert(word, 0, head)
+  }
+
+  @tailrec
+  private def insert(word: String, index: Int, node: Node): Unit = {
+    if index >= word.length then {
+      node.isWord = true
+      return
+    }
+
+    val char = word.charAt(index)
+    if node.children.contains(char) then
+      insert(word, index + 1, node.children(char))
+    else {
+      node.children.addOne((char, Node(word.substring(0, index + 1), false, mutable.Map())))
+      insert(word, index + 1, node.children(char))
+    }
+  }
+
+  def search(word: String): Boolean = {
+    search(word, 0, head)
+  }
+
+  @tailrec
+  private def search(word: String, index: Int, node: Node): Boolean = {
+    if index >= word.length then return node.isWord
+
+    val char = word.charAt(index)
+    if !node.children.contains(char) then return false
+
+    search(word, index + 1, node.children(char))
+  }
+
+  def startsWith(prefix: String): Boolean = {
+    startsWith(prefix, 0, head)
+  }
+
+  @tailrec
+  private def startsWith(prefix: String, index: Int, node: Node): Boolean = {
+    if index >= prefix.length then return true
+
+    val char = prefix.charAt(index)
+    if !node.children.contains(char) then return false
+
+    startsWith(prefix, index + 1, node.children(char))
+  }
+
+}
+
+class WordDictionary() {
+
+  // https://leetcode.com/problems/design-add-and-search-words-data-structure/?envType=study-plan-v2&envId=top-interview-150
+
+  class Node(var value: String, var isWord: Boolean, val children: mutable.Map[Char, Node])
+
+  private val head = Node("", false, mutable.Map())
+
+  def addWord(word: String): Unit = {
+    insert(word, 0, head)
+  }
+
+  @tailrec
+  private def insert(word: String, index: Int, node: Node): Unit = {
+    if index >= word.length then {
+      node.isWord = true
+      return
+    }
+
+    val char = word.charAt(index)
+    if node.children.contains(char) then
+      insert(word, index + 1, node.children(char))
+    else {
+      node.children.addOne((char, Node(word.substring(0, index + 1), false, mutable.Map())))
+      insert(word, index + 1, node.children(char))
+    }
+  }
+
+  def search(word: String): Boolean = {
+    search(word, 0, head)
+  }
+
+  private def search(word: String, index: Int, node: Node): Boolean = {
+    if index >= word.length then return node.isWord
+
+    val char = word.charAt(index)
+    if char == '.' then {
+      return boundary:
+        for (key, value) <- node.children do
+          if search(word, index + 1, value) then break(true)
+
+        false
+    }
+
+    if !node.children.contains(char) then return false
+
+    search(word, index + 1, node.children(char))
+  }
+
 }
 

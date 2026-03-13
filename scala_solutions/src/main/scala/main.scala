@@ -1,5 +1,6 @@
 import scala.annotation.tailrec
 import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 import scala.util.boundary
 import scala.util.boundary.break
 
@@ -173,12 +174,13 @@ def buildAdjList(wordSet: mutable.Set[String], n: Int): mutable.Map[String, muta
 
   adjList
 }
+
+class Node(var value: String, var isWord: Boolean, val children: mutable.Map[Char, Node])
+
 class Trie() {
   // https://leetcode.com/problems/implement-trie-prefix-tree/description/?envType=study-plan-v2&envId=top-interview-150
 
-  class Node(var value: String, var isWord: Boolean, val children: mutable.Map[Char, Node])
-
-  private val head = Node("", false, mutable.Map())
+  val head = Node("", false, mutable.Map())
 
   def insert(word: String): Unit = {
     insert(word, 0, head)
@@ -226,6 +228,35 @@ class Trie() {
     if !node.children.contains(char) then return false
 
     startsWith(prefix, index + 1, node.children(char))
+  }
+
+  def delete(word: String): Unit = {
+    val (crossroads, key) = delete(word, 0, head, head, word.charAt(0))
+    if crossroads != null then crossroads.children -= key
+  }
+
+  private def delete(word: String, index: Int, node: Node, crossroads: Node, key: Char): (Node, Char) = {
+    if index >= word.length then
+      if node.children.nonEmpty then {
+        node.isWord = false
+        return (null, ' ')
+      }
+
+      return (crossroads, key)
+
+    var cr = crossroads
+    var k = key
+
+    val char = word.charAt(index)
+    if node.children.size > 1 then {
+      cr = node
+      k = char
+    }
+
+    if (node.children.contains(char)) then
+      delete(word, index + 1, node.children(char), cr, k)
+
+    (null, ' ')
   }
 
 }
@@ -279,5 +310,58 @@ class WordDictionary() {
     search(word, index + 1, node.children(char))
   }
 
+}
+
+def findWords(board: Array[Array[Char]], words: Array[String]): List[String] = {
+  // https://leetcode.com/problems/word-search-ii/description/?envType=study-plan-v2&envId=top-interview-150
+  val trie = Trie()
+  val n = board.length
+  val m = board(0).length
+
+  words.foreach(trie.insert)
+
+  val found = mutable.Set[String]()
+
+  boundary:
+    for
+      i <- 0 until n
+      j <- 0 until m
+    do
+      if found.size == words.length then break(found.toList)
+
+      val foundWords = inspectCell(board, i, j, n, m, trie.head).toList.sortBy(x => -x.length)
+
+      foundWords.foreach(trie.delete)
+      found.addAll(foundWords)
+
+    found.toList
+}
+
+def inspectCell(board: Array[Array[Char]], i: Int, j: Int, n: Int, m: Int, node: Node): mutable.Set[String] = {
+  val visited = Array.ofDim[Boolean](n, m)
+  val result = mutable.Set[String]()
+  checkCell(board, i, j, n, m, node, visited, result)
+
+  result
+}
+
+def checkCell(board: Array[Array[Char]], i: Int, j: Int, n: Int, m: Int, node: Node, visited: Array[Array[Boolean]], result: mutable.Set[String]): Unit = {
+  if i < 0 || j < 0 || i >= n || j >= m || visited(i)(j) then return
+
+  visited(i)(j) = true
+
+  if node.children.contains(board(i)(j)) then
+    val newNode = node.children(board(i)(j))
+
+    if newNode.isWord then result.add(newNode.value)
+
+    checkCell(board, i + 1, j, n, m, newNode, visited, result)
+    checkCell(board, i, j + 1, n, m, newNode, visited, result)
+    checkCell(board, i - 1, j, n, m, newNode, visited, result)
+    checkCell(board, i, j - 1, n, m, newNode, visited, result)
+
+
+
+  visited(i)(j) = false
 }
 

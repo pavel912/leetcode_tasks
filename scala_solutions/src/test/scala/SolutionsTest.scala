@@ -77,4 +77,19 @@ class SolutionsTest extends AnyFunSuite {
     assert(dict.search("b.."))
     assert(!dict.search(".."))
   }
+
+  test("findWords") {
+    val res = findWords(
+      Array(
+        Array('o','a','a','n'),
+        Array('e','t','a','e'),
+        Array('i','h','k','r'),
+        Array('i','f','l','v')
+      ),
+      Array("oath","pea","eat","rain")
+    )
+
+    assert(res.contains("oath"))
+    assert(res.contains("eat"))
+  }
 }

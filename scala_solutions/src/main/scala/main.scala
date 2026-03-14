@@ -365,3 +365,26 @@ def checkCell(board: Array[Array[Char]], i: Int, j: Int, n: Int, m: Int, node: N
   visited(i)(j) = false
 }
 
+def letterCombinations(digits: String): List[String] = {
+  var ans = List[String]("")
+
+  val digitMap = Map(
+    '2' -> "abc",
+    '3' -> "def",
+    '4' -> "ghi",
+    '5' -> "jkl",
+    '6' -> "mno",
+    '7' -> "pqrs",
+    '8' -> "tuv",
+    '9' -> "wxyz"
+  )
+
+  for d <- digits do
+    ans = for word <- ans
+              l <- digitMap(d)
+    yield
+        word + s"$l"
+
+  ans
+}
+

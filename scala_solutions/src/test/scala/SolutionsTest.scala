@@ -92,4 +92,8 @@ class SolutionsTest extends AnyFunSuite {
     assert(res.contains("oath"))
     assert(res.contains("eat"))
   }
+
+  test("letterCombinations") {
+    assert(letterCombinations("23").length == 9)
+  }
 }

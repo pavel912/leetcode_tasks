@@ -388,3 +388,37 @@ def letterCombinations(digits: String): List[String] = {
   ans
 }
 
+def combine(n: Int, k: Int): List[List[Int]] = {
+  // https://leetcode.com/problems/combinations/?envType=study-plan-v2&envId=top-interview-150
+  var ans = List[List[Int]](List[Int]())
+
+  for k_ <- 0 until k do
+    ans = for
+      s <- ans
+      n_ <- 1 to n
+      if s.isEmpty || n_ > s.head
+    yield
+      n_ :: s
+
+
+  ans
+}
+
+def permute(nums: Array[Int]): List[List[Int]] = {
+  // https://leetcode.com/problems/permutations/?envType=study-plan-v2&envId=top-interview-150
+
+  var ans = List[List[Int]](List[Int]())
+
+  for k <- 0 until nums.length do
+    ans = for
+      s <- ans
+      n <- nums
+      if !s.contains(n)
+    yield
+      n :: s
+
+
+  ans
+
+}
+

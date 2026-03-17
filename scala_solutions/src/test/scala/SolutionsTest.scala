@@ -96,4 +96,18 @@ class SolutionsTest extends AnyFunSuite {
   test("letterCombinations") {
     assert(letterCombinations("23").length == 9)
   }
+
+  test("combine") {
+    assert(combine(4, 2).length == 6)
+    assert(combine(6, 3).length == 20)
+    assert(combine(1, 1).length == 1)
+  }
+
+  test("permute") {
+    assert(permute(Array(1, 2, 3)).length == 6)
+
+    assert(permute(Array(0, 1)).length == 2)
+
+    assert(permute(Array(1)).length == 1)
+  }
 }

@@ -422,3 +422,24 @@ def permute(nums: Array[Int]): List[List[Int]] = {
 
 }
 
+def combinationSum(candidates: Array[Int], target: Int): List[List[Int]] = {
+  // https://leetcode.com/problems/combination-sum/?envType=study-plan-v2&envId=top-interview-150
+
+  val ans = ListBuffer[List[Int]]()
+
+  def helper(nums: List[Int], sum: Int): Unit = {
+    if sum == target then {
+      ans.append(nums)
+      return
+    } else if sum > target then
+      return
+
+    for num <- candidates do
+      if nums.isEmpty || num >= nums.head then helper(num :: nums, sum + num)
+  }
+
+  helper(List[Int](), 0)
+
+  ans.toList
+}
+

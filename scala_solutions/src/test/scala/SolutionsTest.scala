@@ -110,4 +110,12 @@ class SolutionsTest extends AnyFunSuite {
 
     assert(permute(Array(1)).length == 1)
   }
+
+  test("combinationSum") {
+    assert(combinationSum(Array(2, 3, 6, 7), 7).length == 2)
+
+    assert(combinationSum(Array(2, 3, 5), 8).length == 3)
+
+    assert(combinationSum(Array(2), 1).length == 0)
+  }
 }

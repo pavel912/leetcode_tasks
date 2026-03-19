@@ -118,4 +118,10 @@ class SolutionsTest extends AnyFunSuite {
 
     assert(combinationSum(Array(2), 1).length == 0)
   }
+
+  test("queens") {
+    assert(totalNQueens(4) == 2)
+    assert(totalNQueens(2) == 0)
+    assert(totalNQueens(1) == 1)
+  }
 }

@@ -443,3 +443,38 @@ def combinationSum(candidates: Array[Int], target: Int): List[List[Int]] = {
   ans.toList
 }
 
+def totalNQueens(n: Int): Int = {
+  var ways = 0
+
+  def newRow(taken: Array[String], queenPos: Int): Array[String] = {
+    val next = Array.fill(n)("")
+
+    for j <- 0 until n do
+      for s <- taken(j) do
+        s match {
+          case 'l' => if j > 0 then next(j - 1) = next(j - 1).concat("l")
+          case 'd' => next(j) = next(j).concat("d")
+          case 'r' => if j < n - 1 then next(j + 1) = next(j + 1).concat("r")
+      }
+
+    if queenPos > 0 then next(queenPos - 1) = next(queenPos - 1).concat("l")
+    next(queenPos) = next(queenPos).concat("d")
+    if queenPos < n - 1 then next(queenPos + 1) = next(queenPos + 1).concat("r")
+
+    next
+  }
+
+  def helper(taken: Array[String], row: Int): Unit = {
+    if row > n then {
+      ways += 1
+      return
+    }
+
+    for j <- 0 until n do
+      if taken(j).isEmpty then helper(newRow(taken, j), row + 1)
+  }
+
+  helper(Array.fill(n)(""), 1)
+
+  ways
+}

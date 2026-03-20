@@ -124,4 +124,14 @@ class SolutionsTest extends AnyFunSuite {
     assert(totalNQueens(2) == 0)
     assert(totalNQueens(1) == 1)
   }
+
+  test("generateParathesis") {
+    assert(generateParenthesis(3).length == 5)
+    assert(generateParenthesis(1).length == 1)
+  }
+
+  test("exist") {
+    assert(exist(Array(Array('A','B','C','E'),Array('S','F','C','S'),Array('A','D','E','E')), "ABCCED"))
+    assert(!exist(Array(Array('A','B','C','E'),Array('S','F','C','S'),Array('A','D','E','E')), "ABCB"))
+  }
 }

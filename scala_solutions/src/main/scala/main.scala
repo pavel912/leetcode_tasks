@@ -478,3 +478,51 @@ def totalNQueens(n: Int): Int = {
 
   ways
 }
+
+def generateParenthesis(n: Int): List[String] = {
+  val ans = ListBuffer[String]()
+
+  def helper(seq: String, open: Int, finished: Int) : Unit = {
+    if finished == n then {
+      ans.addOne(seq)
+      return
+    }
+
+    if open + finished < n then helper(seq + "(", open + 1, finished)
+
+    if open > 0 then helper(seq + ")", open - 1, finished + 1)
+  }
+
+  helper("", 0, 0)
+
+  ans.toList
+}
+
+def exist(board: Array[Array[Char]], word: String): Boolean = {
+  val n = board.length
+  val m = board(0).length
+
+  def dfs(i: Int, j: Int, k: Int): Boolean = {
+    if (i >= n || i < 0 || j >= m || j < 0 || board(i)(j) == '*' || board(i)(j) != word(k)) return false
+
+    if k == word.length - 1 then return true
+
+    val char = board(i)(j)
+    board(i)(j) = '*'
+
+    val res = dfs(i + 1, j, k + 1) || dfs(i - 1, j, k + 1) || dfs(i, j + 1, k + 1) || dfs(i, j - 1, k + 1)
+
+    board(i)(j) = char
+
+    res
+  }
+
+  boundary:
+    for
+      i <- board.indices
+      j <- board(i).indices
+    do
+      if dfs(i, j, 0) then break(true)
+
+    false
+}

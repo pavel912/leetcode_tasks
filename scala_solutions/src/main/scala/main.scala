@@ -526,3 +526,15 @@ def exist(board: Array[Array[Char]], word: String): Boolean = {
 
     false
 }
+
+def sortedArrayToBST(nums: Array[Int]): TreeNode = {
+  def helper(start: Int, end: Int): TreeNode = {
+    if start < 0 || end >= nums.length || start > end then return null
+
+    val mid = (start + end) / 2
+
+    TreeNode(nums(mid), helper(start, mid - 1), helper(mid + 1, end))
+  }
+
+  helper(0, nums.length - 1)
+}

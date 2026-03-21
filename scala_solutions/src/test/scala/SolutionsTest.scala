@@ -134,4 +134,8 @@ class SolutionsTest extends AnyFunSuite {
     assert(exist(Array(Array('A','B','C','E'),Array('S','F','C','S'),Array('A','D','E','E')), "ABCCED"))
     assert(!exist(Array(Array('A','B','C','E'),Array('S','F','C','S'),Array('A','D','E','E')), "ABCB"))
   }
+
+  test("sortedArrayToBST") {
+    assert(sortedArrayToBST(Array(-10,-3,0,5,9)).value == 0)
+  }
 }
